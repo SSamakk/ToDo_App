@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
         title: selectedIndex == 0
             ? Text(
                 '${AppLocalizations.of(context)!.to_do_list} - '
-                    '${authProvider.currentUser!.name}',
+                    '${authProvider.currentUser?.name ?? ''}',
                 style: provider.isDark()
                     ? MyTheme.darkMode.textTheme.titleLarge
                     : MyTheme.lightMode.textTheme.titleLarge,
@@ -44,10 +44,10 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
               onPressed: (){
-                provider.tasksList = [];
-                authProvider.currentUser = null;
                 Navigator.of(context).pushReplacementNamed(
                     LoginScreen.routeName);
+                provider.tasksList = [];
+                authProvider.currentUser = null;
               },
               icon: const Icon(Icons.logout)),
         ],

@@ -23,7 +23,7 @@ class _TaskListTabState extends State<TaskListTab> {
     var authProvider = Provider.of<AuthProvider>(context, listen: false);
 
     if(provider.tasksList.isEmpty){
-      provider.getAllTasks(authProvider.currentUser!.id!);
+      provider.getAllTasks(authProvider.currentUser?.id ?? '');
     }
 
     return Stack(
