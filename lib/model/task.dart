@@ -27,6 +27,10 @@ class Task {
     isDone: data['isDone']
   );
 
+  bool taskDone(){
+    return isDone ?? false;
+  }
+
   /// method
   // to Json
   // Object => Map

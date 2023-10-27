@@ -26,24 +26,27 @@ class _LanguageBottomSheetState extends State<LanguageBottomSheet> {
       child: Column(
         children: [
           /// en
-          InkWell(
-            onTap: () {
-              provider.changeLanguage('en');
-            },
-            child: provider.isEnglish()
-                ? getSelectedWidget(AppLocalizations.of(context)!.en)
-                : getUnselectedWidget(AppLocalizations.of(context)!.en, provider)
+          Expanded(
+            child: InkWell(
+              onTap: () {
+                provider.changeLanguage('en');
+              },
+              child: provider.isEnglish()
+                  ? getSelectedWidget(AppLocalizations.of(context)!.en)
+                  : getUnselectedWidget(AppLocalizations.of(context)!.en, provider)
+            ),
           ),
 
           /// ar
-          InkWell(
+          Expanded(
+            child: InkWell(
               onTap: () {
                 provider.changeLanguage('ar');
               },
               child: provider.isEnglish()
                   ? getUnselectedWidget(AppLocalizations.of(context)!.ar, provider)
                   : getSelectedWidget(AppLocalizations.of(context)!.ar)
-          ),
+          ),)
         ],
       ),
     );

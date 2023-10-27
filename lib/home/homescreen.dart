@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:todo/home/AddTaskBottomSheet.dart';
 import 'package:todo/home/Settings/SettingsTab.dart';
 import 'package:todo/myTheme.dart';
+import 'package:todo/providers/authProvider.dart';
+import '../auth/login/LoginScreen.dart';
 import '../providers/AppProvider.dart';
 import 'TaskList/TaskListTab.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -21,12 +23,14 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<AppConfigProvider>(context);
+    var authProvider = Provider.of<AuthProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
         title: selectedIndex == 0
             ? Text(
-                AppLocalizations.of(context)!.to_do_list,
+                '${AppLocalizations.of(context)!.to_do_list} - '
+                    '${authProvider.currentUser!.name}',
                 style: provider.isDark()
                     ? MyTheme.darkMode.textTheme.titleLarge
                     : MyTheme.lightMode.textTheme.titleLarge,
@@ -37,6 +41,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     ? MyTheme.darkMode.textTheme.titleLarge
                     : MyTheme.lightMode.textTheme.titleLarge,
               ),
+        actions: [
+          IconButton(
+              onPressed: (){
+                provider.tasksList = [];
+                authProvider.currentUser = null;
+                Navigator.of(context).pushReplacementNamed(
+                    LoginScreen.routeName);
+              },
+              icon: const Icon(Icons.logout)),
+        ],
       ),
 
       /// App Bar (for notch) + navigationBar

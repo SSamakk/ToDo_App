@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:todo/dialogUtils.dart';
 import 'package:todo/firebaseUtils.dart';
 import 'package:todo/model/task.dart';
 import 'package:todo/myTheme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:todo/providers/authProvider.dart';
 import '../providers/AppProvider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class AddTaskBottomSheet extends StatefulWidget {
   @override
@@ -166,16 +169,30 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
           description: description,
           date: selectedDate,
       );
+
+      DialogUtils.showLoading(context, 'Loading...');
+      var authProvider = Provider.of<AuthProvider>(context, listen: false);
       // add task to firebase
-      FireBaseUtils.addTaskToFireStore(task).timeout(
-          const Duration(milliseconds: 500),
+      FireBaseUtils.addTaskToFireStore(
+          task, authProvider.currentUser!.id!).then((value) {
+            DialogUtils.hideDialog(context);
+            Fluttertoast.showToast(
+              msg: "To Do added",
+              timeInSecForIosWeb: 2,
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM,
+              backgroundColor: Theme.of(context).primaryColor,
+              textColor: Colors.white,
+              fontSize: 16.0,
+            );
+      }).timeout(
+          const Duration(milliseconds: 50),
           onTimeout: () {
-            print('todo added!'); // flutter toast
-            provider.getAllTasks();
+            provider.getAllTasks(authProvider.currentUser!.id!);
             Navigator.pop(context);
           },
       );
-
     }
   }
+
 }

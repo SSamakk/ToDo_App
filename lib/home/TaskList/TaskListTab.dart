@@ -8,6 +8,7 @@ import 'package:todo/home/TaskList/TaskWidget.dart';
 import 'package:todo/myTheme.dart';
 import '../../model/task.dart';
 import '../../providers/AppProvider.dart';
+import '../../providers/authProvider.dart';
 
 class TaskListTab extends StatefulWidget {
   @override
@@ -19,9 +20,10 @@ class _TaskListTabState extends State<TaskListTab> {
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<AppConfigProvider>(context);
+    var authProvider = Provider.of<AuthProvider>(context, listen: false);
 
     if(provider.tasksList.isEmpty){
-      provider.getAllTasks();
+      provider.getAllTasks(authProvider.currentUser!.id!);
     }
 
     return Stack(
@@ -34,9 +36,13 @@ class _TaskListTabState extends State<TaskListTab> {
           children: [
             /// Calendar at the top
             EasyDateTimeLine(
-              initialDate: DateTime.now(),
+              initialDate: DateTime.now(), /// 30:30 session 10 ??
               onDateChange: (selectedDate) {
                 //`selectedDate` the new date selected.
+                provider.changeDate(
+                    selectedDate,
+                    authProvider.currentUser!.id!
+                );
               },
 
               /// header

@@ -26,7 +26,8 @@ class _ThemeBottomSheetState extends State<ThemeBottomSheet> {
       child: Column(
         children: [
           /// light
-          InkWell(
+          Expanded(
+            child: InkWell(
             onTap: () {
               provider.changeTheme(ThemeMode.light);
             },
@@ -34,15 +35,18 @@ class _ThemeBottomSheetState extends State<ThemeBottomSheet> {
                 ? getUnselectedWidget(AppLocalizations.of(context)!.light, provider)
                 : getSelectedWidget(AppLocalizations.of(context)!.light),
           ),
+          ),
 
           /// ar
-          InkWell(
-              onTap: () {
-                provider.changeTheme(ThemeMode.dark);
-              },
-              child: provider.isDark()
-                  ? getSelectedWidget(AppLocalizations.of(context)!.dark)
-                  : getUnselectedWidget(AppLocalizations.of(context)!.dark, provider),
+          Expanded(
+            child: InkWell(
+                onTap: () {
+                  provider.changeTheme(ThemeMode.dark);
+                },
+                child: provider.isDark()
+                    ? getSelectedWidget(AppLocalizations.of(context)!.dark)
+                    : getUnselectedWidget(AppLocalizations.of(context)!.dark, provider),
+            ),
           ),
         ],
       ),
